@@ -18,3 +18,4 @@ const GIF_DATA: &[u8] = include_bytes!("../assets/catjam.gif");
 ```
 
 Once you change the declaration of `GIF_DATA` and rebuild, the new plugin will play the desired GIF.
+Be careful about the size of the GIFs you compile into this plugin-- if the GIF is long and/or high-resolution, the plugin can be slow to start up.
