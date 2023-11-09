@@ -1,6 +1,5 @@
 use extism_pdk::*;
 use lazy_static::lazy_static;
-use std::ops::DerefMut;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
 use yaged::decoder;
@@ -23,7 +22,6 @@ lazy_static! {
 pub fn setup(_: ()) -> FnResult<()> {
     // Set the number of frames
     let mut n_frames = N_FRAMES.lock().unwrap();
-    let n_frames = n_frames.deref_mut();
     *n_frames = GIF.lock().unwrap().frames().len();
 
     // Setup the LED state
@@ -33,7 +31,6 @@ pub fn setup(_: ()) -> FnResult<()> {
         gif.screen_descriptor().height() as usize,
     );
     let mut src_state = SRC_STATE.lock().unwrap();
-    let src_state = src_state.deref_mut();
     *src_state = vec![vec![[0; 4]; w]; h];
 
     Ok(())
@@ -47,17 +44,11 @@ pub fn update(_: ()) -> FnResult<Json<Vec<Vec<[u8; 4]>>>> {
     // Get the GIF data
     let gif = GIF.lock().unwrap();
 
-    // Get the number of frames, and the index of the current frame
+    // Get references to the state variables
     let n_frames = N_FRAMES.lock().unwrap();
     let mut frame_idx = CURR_FRAME_IDX.lock().unwrap();
-
-    // Get the current source state
     let mut src_state = SRC_STATE.lock().unwrap();
-    let src_state = src_state.deref_mut();
-
-    // Get the last frame time
     let mut last_frame_time = LAST_FRAME_TIME.lock().unwrap();
-    let last_frame_time = last_frame_time.deref_mut();
 
     // Make an empty array for the led state
     let mut led_state = vec![vec![[0u8; 4]; width]; height];
@@ -78,9 +69,8 @@ pub fn update(_: ()) -> FnResult<Json<Vec<Vec<[u8; 4]>>>> {
         }
     };
 
-    let now = Instant::now();
-
     // Update the source state if a frame has passed
+    let now = Instant::now();
     if (now - *last_frame_time).as_millis() >= (frame_delay_time * 10) as u128 {
         // Mark the last frame time
         *last_frame_time = now;
