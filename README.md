@@ -14,7 +14,7 @@ To change the GIF that is compiled into the plugin, you can change the declarati
 
 ```rust
 const GIF_DATA: &[u8] = include_bytes!("../assets/catjam.gif");
-//                                       ^---- Change this to a different path and rebuild
+                                         // ^---- Change this to a different path and rebuild
 ```
 
 Once you change the declaration of `GIF_DATA` and rebuild, the new plugin will play the desired GIF.
