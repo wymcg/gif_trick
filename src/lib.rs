@@ -7,7 +7,7 @@ use yaged::decoder;
 use yaged::decoder::ColorOutput;
 use yaged::types::Gif;
 
-const GIF_DATA: &[u8] = include_bytes!("../testgifs/catjam.gif");
+const GIF_DATA: &[u8] = include_bytes!("../assets/catjam.gif");
 
 lazy_static! {
     static ref GIF: Arc<Mutex<Gif>> = Arc::new(Mutex::new(
